@@ -32,7 +32,7 @@ def generate_launch_description():
         package='ros_gz_bridge',
         executable='parameter_bridge',
         parameters=[{
-            'config_file': os.path.join(pkg_project_bringup, 'config', 'kitt_bridge.yaml'),
+            'config_file': os.path.join(pkg_project_bringup, 'config', 'kitt_nav_bridge.yaml'),
         }],
         output='screen'
     )
@@ -46,7 +46,7 @@ def generate_launch_description():
                    '-y', '-3',
                    '-z', '0.1',
                    '-Y', '3.1416',
-                   '-file', os.path.join(pkg_project_gazebo, 'models', 'diff_drive', 'kitt_dd')],
+                   '-file', os.path.join(pkg_project_gazebo, 'models', 'diff_drive', 'kitt_nav_dd')],
         output='screen'
     )
 
