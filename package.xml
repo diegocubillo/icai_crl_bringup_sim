@@ -9,6 +9,8 @@
   <author>Diego Cubillo</author>
 
   <depend>ros_gz</depend>
+  <depend>joy</depend>
+  <depend>teleop_twist_joy</depend>
 
   <depend>icai_crl_description</depend>
   <depend>icai_crl_gazebo</depend>
