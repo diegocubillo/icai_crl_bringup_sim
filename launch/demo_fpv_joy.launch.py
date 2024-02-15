@@ -51,16 +51,11 @@ def generate_launch_description():
         output='screen'
     )
 
-    horizontal_fpv_camera = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(
-            pkg_horizontal_image_view + '/launch/kitt_fpv_launch.py')
-    )
-
     # Open rqt_image_view to visualize the fpv image
     rqt_image_view = Node(
         package='rqt_image_view',
         executable='rqt_image_view',
-        arguments=['/kitt/coupled_fpv_camera'],
+        arguments=['/kitt/fpv_camera'],
         output='screen'
     )
 
@@ -84,7 +79,6 @@ def generate_launch_description():
         gz_sim,
         bridge,
         spawn_entity,
-        horizontal_fpv_camera,
         rqt_image_view,
         joy,
         teleop
