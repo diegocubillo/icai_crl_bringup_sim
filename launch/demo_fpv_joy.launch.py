@@ -17,7 +17,6 @@ def generate_launch_description():
     pkg_project_bringup = get_package_share_directory('icai_crl_bringup')
     pkg_project_gazebo = get_package_share_directory('icai_crl_gazebo')
     pkg_ros_gz_sim = get_package_share_directory('ros_gz_sim')
-    pkg_horizontal_image_view = get_package_share_directory('horizontal_image_couple')
 
     # Setup to launch the simulator and Gazebo world
     world_sdf_path = os.path.join(pkg_project_gazebo, 'worlds', 'control_laboratory.sdf')
