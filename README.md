@@ -4,17 +4,26 @@ Launch and configuration files for robot simulation of ICAI's Control and Roboti
 
 ## Installation
 
+### Dependencies
 To use this package, you need to have ROS 2 humble, Gazebo Fortress and ros_gz installed on your linux system (binaries are available for Ubuntu 22.04). If you haven't installed them yet, follow these steps:
 
 1. Install ROS by following the instructions at [ROS Installation Guide](http://docs.ros.org/en/humble/Installation.html).
 2. Install Gazebo and ros_gz by following the instructions at [Gazebo with ROS Installation Guide](https://gazebosim.org/docs/fortress/ros_installation).
 
-## Repositories
+### Other Repositories
 
 This package makes use of the packages contained in the following repositories:
 
 - [icai_crl_gazebo](https://github.com/diegocubillo/icai_crl_gazebo): Contains custom plugins and the simulation configuration files for robot simulation.
 - [icai_crl_description](https://github.com/diegocubillo/icai_crl_description): Contains the robot and environment description files.
+
+### Install
+
+Place this and the aforementioned repositories inside the src/ directory of a ROS 2 workspace and run command:
+```bash
+colcon build
+```
+
 
 ## Launch Files
 
@@ -27,6 +36,12 @@ Provided launch files are:
 - `ramp_circuit_kitt_dd_gui.launch.py`: Launches the robot simulation with ICAI's competition circuit `ramp_circuit` environment, AMR `kitt` and Gazebo's confroller `diff_drive`.
 - `launch_and_joy.launch.py`: Launches `control_lab_kitt_dd_gui.launch.py` with nodes from libraries `joy` and `teleop_twist_joy` configured to control `kitt` with FlySky FS-i6S radio controller.
 - `demo_fpv_joy.launch.py`: Includes everything mentioned in `launch_and_joy.launch.py`, but using kitt_fpv, a variant that includes a front view camera. Its stream is visualized through `rqt_image_view`.
+
+To launch them, source your workspace and run (substituting launch_file_name by your desired launch file):
+```bash
+ros2 launch icai_crl_bringup launch_file_name
+```
+
 
 ## ROS Bridges
 
