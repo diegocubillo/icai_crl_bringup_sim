@@ -11,9 +11,11 @@
   <depend>ros_gz</depend>
   <depend>joy</depend>
   <depend>teleop_twist_joy</depend>
+  <depend>rqt_image_view</depend>
 
   <depend>icai_crl_description</depend>
   <depend>icai_crl_gazebo</depend>
+  <depend>horizontal_image_couple</depend>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 

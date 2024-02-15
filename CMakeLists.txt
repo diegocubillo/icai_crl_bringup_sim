@@ -5,6 +5,7 @@ project(icai_crl_bringup)
 find_package(ament_cmake REQUIRED)
 find_package(icai_crl_description REQUIRED)
 find_package(icai_crl_gazebo REQUIRED)
+find_package(horizontal_image_couple REQUIRED)
 
 # Install project launch files
 install(
