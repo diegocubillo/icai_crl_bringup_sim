@@ -1,41 +1,41 @@
 ---
 - ros_topic_name: "/kitt/left_wheel/cmd_volt"
-  gz_topic_name: "/model/kitt_md25/left_wheel_joint/motor_volt_cmd"
+  gz_topic_name: "/model/kitt_md25_o1/left_wheel_joint/motor_volt_cmd"
   ros_type_name: "std_msgs/msg/Float64"
   gz_type_name: "gz.msgs.Double"
   direction: ROS_TO_GZ
 - ros_topic_name: "/kitt/right_wheel/cmd_volt"
-  gz_topic_name: "/model/kitt_md25/right_wheel_joint/motor_volt_cmd"
+  gz_topic_name: "/model/kitt_md25_o1/right_wheel_joint/motor_volt_cmd"
   ros_type_name: "std_msgs/msg/Float64"
   gz_type_name: "gz.msgs.Double"
   direction: ROS_TO_GZ
 - ros_topic_name: "/kitt/left_wheel/voltage"
-  gz_topic_name: "/model/kitt_md25/left_wheel_joint/motor_voltage"
+  gz_topic_name: "/model/kitt_md25_o1/left_wheel_joint/motor_voltage"
   ros_type_name: "std_msgs/msg/Float64"
   gz_type_name: "gz.msgs.Double"
   direction: GZ_TO_ROS
 - ros_topic_name: "/kitt/right_wheel/voltage"
-  gz_topic_name: "/model/kitt_md25/right_wheel_joint/motor_voltage"
+  gz_topic_name: "/model/kitt_md25_o1/right_wheel_joint/motor_voltage"
   ros_type_name: "std_msgs/msg/Float64"
   gz_type_name: "gz.msgs.Double"
   direction: GZ_TO_ROS
 - ros_topic_name: "/kitt/left_wheel/ang_velocity"
-  gz_topic_name: "/model/kitt_md25/left_wheel_joint/joint_velocity"
+  gz_topic_name: "/model/kitt_md25_o1/left_wheel_joint/joint_velocity"
   ros_type_name: "std_msgs/msg/Float64"
   gz_type_name: "gz.msgs.Double"
   direction: GZ_TO_ROS
 - ros_topic_name: "/kitt/right_wheel/ang_velocity"
-  gz_topic_name: "/model/kitt_md25/right_wheel_joint/joint_velocity"
+  gz_topic_name: "/model/kitt_md25_o1/right_wheel_joint/joint_velocity"
   ros_type_name: "std_msgs/msg/Float64"
   gz_type_name: "gz.msgs.Double"
   direction: GZ_TO_ROS
 - ros_topic_name: "/kitt/left_wheel/encoder"
-  gz_topic_name: "/model/kitt_md25/left_wheel_joint/motor_encoder"
+  gz_topic_name: "/model/kitt_md25_o1/left_wheel_joint/motor_encoder"
   ros_type_name: "std_msgs/msg/Int32"
   gz_type_name: "gz.msgs.Int32"
   direction: GZ_TO_ROS
 - ros_topic_name: "/kitt/right_wheel/encoder"
-  gz_topic_name: "/model/kitt_md25/right_wheel_joint/motor_encoder"
+  gz_topic_name: "/model/kitt_md25_o1/right_wheel_joint/motor_encoder"
   ros_type_name: "std_msgs/msg/Int32"
   gz_type_name: "gz.msgs.Int32"
   direction: GZ_TO_ROS

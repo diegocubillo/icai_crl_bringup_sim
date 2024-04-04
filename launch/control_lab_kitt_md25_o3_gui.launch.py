@@ -32,7 +32,7 @@ def generate_launch_description():
         package='ros_gz_bridge',
         executable='parameter_bridge',
         parameters=[{
-            'config_file': os.path.join(pkg_project_bringup, 'config', 'kitt_md25_bridge.yaml'),
+            'config_file': os.path.join(pkg_project_bringup, 'config', 'kitt_md25_bridge_o3.yaml'),
         }],
         output='screen'
     )
@@ -41,12 +41,12 @@ def generate_launch_description():
     spawn_entity = Node(
         package='ros_gz_sim',
         executable='create',
-        arguments=['-name', 'kitt_md25',
+        arguments=['-name', 'kitt_md25_o3',
                    '-x', '3',
                    '-y', '-3',
                    '-z', '0.1',
                    '-Y', '3.1416',
-                   '-file', os.path.join(pkg_project_gazebo, 'models', 'md25_driver', 'kitt_md25')],
+                   '-file', os.path.join(pkg_project_gazebo, 'models', 'md25_driver', 'kitt_md25_o3')],
         output='screen'
     )
 
