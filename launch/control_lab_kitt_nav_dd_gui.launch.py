@@ -53,7 +53,7 @@ def generate_launch_description():
     static_transform_publisher_node = Node(
         package='tf2_ros',
         executable='static_transform_publisher',
-        name='link1_broadcaster',
+        name='lidar_transform_broadcaster',
         arguments=['0.1075', '-0.03295', '0.145', '0', '0', '0', '1', 'kitt_dd/car_body', 'kitt_dd/nav_module/rplidar_a2m8'],
         output='screen',
     )
