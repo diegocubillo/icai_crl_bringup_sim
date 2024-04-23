@@ -56,7 +56,7 @@ def generate_launch_description():
         output='screen'
     )
 
-    static_transform_publisher_node = Node(
+    lidar_static_transform_publisher_node = Node(
         package='tf2_ros',
         executable='static_transform_publisher',
         name='lidar_transform_broadcaster',
@@ -102,7 +102,8 @@ def generate_launch_description():
                    '--qz', '1',
                    '--qw', '0',
                    '--frame-id', 'control_laboratory_with_car',
-                   '--child-frame-id', 'odom'],
+                   #'--child-frame-id', 'odom'], # Ideal odometry frame
+                   '--child-frame-id', 'kitt_dd/odom'], # Odometry from encoders
         parameters=[{'use_sim_time': use_sim_time}],
         output='screen',
     )
@@ -120,14 +121,15 @@ def generate_launch_description():
         executable='async_slam_toolbox_node',
         name='slam_toolbox',
         parameters=[{'use_sim_time': use_sim_time},
-                    {'odom_frame': 'odom'},
-                    {'base_frame': 'kitt_dd'},
+                    #{'odom_frame': 'odom'}, # Ideal odometry frame
+                    #{'use_scan_matching': False} # False for ideal odometry
+                    {'odom_frame': 'kitt_dd/odom'}, # Odometry from encoders
+                    {'base_frame': 'kitt_dd/car_body'},
                     {'map_frame': 'control_laboratory_with_car'},
                     # {'map_file_name': map_yaml_path},
-                    {'map_start_pose': [3.0, -3.0, 3.1416]}, # x, y, theta,
+                    # {'map_start_pose': [3.0, -3.0, 3.1416]}, # x, y, theta,
                     {'max_laser_range': 8.0},
-                    {'mode': 'mapping'},
-                    {'use_scan_matching': False}
+                    {'mode': 'mapping'}
                     ],
         output='screen',
     )
@@ -137,9 +139,9 @@ def generate_launch_description():
         gz_sim,
         bridge,
         spawn_entity,
-        static_transform_publisher_node,
-        second_static_transform_publisher_node,
-        odom_static_transform_publisher_node,
+        lidar_static_transform_publisher_node,
+        # second_static_transform_publisher_node, # Used with the ideal odometry frame
+        # odom_static_transform_publisher_node, # Used with the ideal odometry frame
         rviz2,
         slam_online_async
     ])
