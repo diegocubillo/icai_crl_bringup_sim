@@ -31,9 +31,11 @@ def generate_launch_description():
     bridge = Node(
         package='ros_gz_bridge',
         executable='parameter_bridge',
-        parameters=[{
-            'config_file': os.path.join(pkg_project_bringup, 'config', 'kitt_fpv_bridge.yaml'),
-        }],
+        parameters=[
+            {'config_file': os.path.join(pkg_project_bringup, 'config', 'kitt_fpv_dd_bridge.yaml')},
+            {'expand_gz_topic_names': True}
+        ],
+        namespace=['/model/kitt'],
         output='screen'
     )
 
@@ -41,8 +43,7 @@ def generate_launch_description():
     spawn_entity = Node(
         package='ros_gz_sim',
         executable='create',
-        arguments=['-name', 'kitt_dd',
-                   '-x', '3',
+        arguments=['-x', '3',
                    '-y', '-3',
                    '-z', '0.1',
                    '-Y', '3.1416',
@@ -54,7 +55,8 @@ def generate_launch_description():
     rqt_image_view = Node(
         package='rqt_image_view',
         executable='rqt_image_view',
-        arguments=['/kitt/fpv_camera'],
+        arguments=['fpv_camera'],
+        namespace=['/model/kitt'],
         output='screen'
     )
 
@@ -62,6 +64,7 @@ def generate_launch_description():
     joy = Node(
         package='joy',
         executable='joy_node',
+        namespace=['/model/kitt'],
         output='screen'
     )
 
@@ -70,7 +73,7 @@ def generate_launch_description():
         package='teleop_twist_joy',
         executable='teleop_node',
         parameters=[os.path.join(pkg_project_bringup, 'config', 'FlySky_FS-i6S.config.yaml')],
-        remappings=[('/cmd_vel', '/kitt/cmd_vel')],
+        namespace=['/model/kitt'],
         output='screen'
     )
 

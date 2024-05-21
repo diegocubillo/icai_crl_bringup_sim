@@ -31,9 +31,11 @@ def generate_launch_description():
     bridge = Node(
         package='ros_gz_bridge',
         executable='parameter_bridge',
-        parameters=[{
-            'config_file': os.path.join(pkg_project_bringup, 'config', 'kitt_nav_bridge.yaml'),
-        }],
+        parameters=[
+            {'config_file': os.path.join(pkg_project_bringup, 'config', 'kitt_nav_dd_bridge.yaml')},
+            {'expand_gz_topic_names': True}
+        ],
+        namespace=['/model/kitt'],
         output='screen'
     )
 
@@ -41,8 +43,7 @@ def generate_launch_description():
     spawn_entity = Node(
         package='ros_gz_sim',
         executable='create',
-        arguments=['-name', 'kitt_dd',
-                   '-x', '3',
+        arguments=['-x', '3',
                    '-y', '-3',
                    '-z', '0.1',
                    '-Y', '3.1416',
@@ -54,7 +55,7 @@ def generate_launch_description():
         package='tf2_ros',
         executable='static_transform_publisher',
         name='lidar_transform_broadcaster',
-        arguments=['0.1075', '-0.03295', '0.145', '0', '0', '0', '1', 'kitt_dd/car_body', 'kitt_dd/nav_module/rplidar_a2m8'],
+        arguments=['0.1075', '-0.03295', '0.145', '0', '0', '0', '1', 'kitt/car_body', 'kitt/nav_module/rplidar_a2m8'],
         output='screen',
     )
 
