@@ -22,38 +22,30 @@ def generate_launch_description():
     # Setup to launch the simulator and Gazebo world
     world_sdf_path = os.path.join(pkg_project_gazebo, 'worlds', 'control_laboratory.sdf')
     config_gui_path = os.path.join(pkg_project_bringup, 'config', 'gazebo_gui.config')
+    kitt_md25_launch_path = os.path.join(pkg_project_bringup, 'launch', 'labeled_kitt_md25.py')
+
+    kitt_name = DeclareLaunchArgument(
+        'kitt_name',
+        default_value='kitt_md25_01',
+        description='Name of the KITT model in Gazebo'
+    )
+    kitt_name_arg = LaunchConfiguration('kitt_name')
+
     control_laboratory = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(pkg_ros_gz_sim, 'launch', 'gz_sim.launch.py')),
         launch_arguments={'gz_args': world_sdf_path + ' -v --gui-config ' + config_gui_path}.items(),
     )
 
-    # Bridge ROS topics and Gazebo messages for establishing communication
-    bridge = Node(
-        package='ros_gz_bridge',
-        executable='parameter_bridge',
-        parameters=[
-            {'config_file': os.path.join(pkg_project_bringup, 'config', 'kitt_md25_bridge.yaml')},
-            {'expand_gz_topic_names': True}
-        ],
-        namespace=['/model/kitt'],
-        output='screen'
-    )
 
-    # Spawn the car model in the Gazebo world
-    kitt_md25_robot = Node(
-        package='ros_gz_sim',
-        executable='create',
-        arguments=['-x', '3',
-                   '-y', '-3',
-                   '-z', '0.1',
-                   '-Y', '3.1416',
-                   '-file', os.path.join(pkg_project_gazebo, 'models', 'md25_driver', 'kitt_md25')],
-        output='screen'
+    # Bridge ROS topics and Gazebo messages for establishing communication
+    kitt_md25_robot = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource([kitt_md25_launch_path]),
+        launch_arguments={'kitt_name': kitt_name_arg}.items(),
     )
 
     return LaunchDescription([
-        bridge,
+        kitt_name,
         control_laboratory,
         kitt_md25_robot
     ])
