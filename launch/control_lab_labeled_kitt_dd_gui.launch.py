@@ -6,10 +6,21 @@ from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
 from launch.actions import IncludeLaunchDescription, DeclareLaunchArgument
 from launch.launch_description_sources import PythonLaunchDescriptionSource
-from launch.substitutions import LaunchConfiguration
 
-from launch_ros.actions import Node
 
+def generate_robot_launch_description(name, x, y, z, Y):
+    pkg_project_bringup = get_package_share_directory('icai_crl_bringup')
+    kitt_dd_launch_path = os.path.join(pkg_project_bringup, 'launch', 'labeled_kitt_dd.py')
+    return IncludeLaunchDescription(
+        PythonLaunchDescriptionSource([kitt_dd_launch_path]),
+        launch_arguments={
+            'kitt_name': name,
+            'initial_x': str(x),
+            'initial_y': str(y),
+            'initial_z': str(z),
+            'initial_Y': str(Y)
+        }.items(),
+    )
 
 def generate_launch_description():
     # Configure ROS nodes for launch
@@ -22,7 +33,6 @@ def generate_launch_description():
     # Setup to launch the simulator and Gazebo world
     world_sdf_path = os.path.join(pkg_project_gazebo, 'worlds', 'control_laboratory.sdf')
     config_gui_path = os.path.join(pkg_project_bringup, 'config', 'gazebo_gui.config')
-    kitt_dd_launch_path = os.path.join(pkg_project_bringup, 'launch', 'labeled_kitt_dd.py')
 
     # kitt_name = DeclareLaunchArgument(
     #     'kitt_name',
@@ -38,29 +48,37 @@ def generate_launch_description():
     )
 
 
-    # Bridge ROS topics and Gazebo messages for establishing communication
-    kitt_dd_robot_1 = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource([kitt_dd_launch_path]),
-        launch_arguments={'kitt_name': 'kitt_dd_01',
-                          'initial_x': '3',
-                          'initial_y': '-4',
-                          'initial_z': '0.01',
-                          'initial_Y': '0'}.items(),
-    )
+    # # Bridge ROS topics and Gazebo messages for establishing communication
+    # kitt_dd_robot_1 = IncludeLaunchDescription(
+    #     PythonLaunchDescriptionSource([kitt_dd_launch_path]),
+    #     launch_arguments={'kitt_name': 'kitt_dd_01',
+    #                       'initial_x': '3',
+    #                       'initial_y': '-4',
+    #                       'initial_z': '0.01',
+    #                       'initial_Y': '0'}.items(),
+    # )
 
-    # Bridge ROS topics and Gazebo messages for establishing communication
-    kitt_dd_robot_2 = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource([kitt_dd_launch_path]),
-        launch_arguments={'kitt_name': 'kitt_dd_02',
-                          'initial_x': '3',
-                          'initial_y': '-3',
-                          'initial_z': '0.01',
-                          'initial_Y': '3.1416'}.items(),
-    )
+    # # Bridge ROS topics and Gazebo messages for establishing communication
+    # kitt_dd_robot_2 = IncludeLaunchDescription(
+    #     PythonLaunchDescriptionSource([kitt_dd_launch_path]),
+    #     launch_arguments={'kitt_name': 'kitt_dd_02',
+    #                       'initial_x': '3',
+    #                       'initial_y': '-3',
+    #                       'initial_z': '0.01',
+    #                       'initial_Y': '3.1416'}.items(),
+    # )
+    robots = [
+        ('kitt_dd_01', 3, -4, 0.01, 0),
+        ('kitt_dd_02', 3, -2, 0.01, 3.1416)]
+
+    # Generate a launch description for each robot
+    robot_launch_descriptions = [generate_robot_launch_description(*robot) for robot in robots]
+
 
     return LaunchDescription([
         # kitt_name,
         control_laboratory,
-        kitt_dd_robot_1,
-        kitt_dd_robot_2
+        # kitt_dd_robot_1,
+        # kitt_dd_robot_2
+        *robot_launch_descriptions
     ])
