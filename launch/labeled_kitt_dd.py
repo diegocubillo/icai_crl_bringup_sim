@@ -16,17 +16,17 @@ def generate_model_files(context: LaunchContext, model_name: str):
 
     model_name_str=context.perform_substitution(model_name)
     # Setup model directory
-    model_dir = os.path.join(pkg_project_gazebo, "models", "md25_driver", model_name_str)
+    model_dir = os.path.join(pkg_project_gazebo, "models", "diff_drive", model_name_str)
     if not os.path.exists(model_dir):
         # Create the model directory
         os.makedirs(model_dir)
 
         # Create a Jinja2 environment with the template directory
         env = Environment(loader=FileSystemLoader(os.path.join(
-            pkg_project_gazebo, 'models', 'md25_driver', 'kitt_md25_template')))
+            pkg_project_gazebo, 'models', 'diff_drive', 'kitt_dd_template')))
 
         # Render the templates and write the output files
-        for template_name, output_name in [('kitt_md25_template.sdf.jinja', f'{model_name_str}.sdf'),
+        for template_name, output_name in [('kitt_dd_template.sdf.jinja', f'{model_name_str}.sdf'),
                                         ('model.config.jinja', 'model.config')]:
             template = env.get_template(template_name)
             output = template.render(model_name=model_name_str)
@@ -48,7 +48,7 @@ def generate_launch_description():
     # kitt name argument
     kitt_name = DeclareLaunchArgument(
         'kitt_name',
-        default_value='kitt_md25_01',
+        default_value='kitt_dd_01',
         description='Name of the KITT model in Gazebo'
     )
     kitt_name_arg = LaunchConfiguration('kitt_name')
@@ -61,9 +61,9 @@ def generate_launch_description():
     bridge = Node(
         package='ros_gz_bridge',
         executable='parameter_bridge',
-        name='kitt_md25_bridge',
+        name='kitt_dd_bridge',
         parameters=[
-            {'config_file': os.path.join(pkg_project_bringup, 'config', 'kitt_md25_bridge.yaml')},
+            {'config_file': os.path.join(pkg_project_bringup, 'config', 'kitt_dd_bridge.yaml')},
             {'expand_gz_topic_names': True}
         ],
         namespace=['/model/', kitt_name_arg],
@@ -79,7 +79,7 @@ def generate_launch_description():
                    '-y', '-3',
                    '-z', '0.1',
                    '-Y', '3.1416',
-                   '-file', PathJoinSubstitution([pkg_project_gazebo, 'models', 'md25_driver', kitt_name_arg])],
+                   '-file', PathJoinSubstitution([pkg_project_gazebo, 'models', 'diff_drive', kitt_name_arg])],
         output='screen'
     )
 

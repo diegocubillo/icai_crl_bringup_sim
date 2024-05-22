@@ -23,10 +23,10 @@ def generate_model_files(context: LaunchContext, model_name: str):
 
         # Create a Jinja2 environment with the template directory
         env = Environment(loader=FileSystemLoader(os.path.join(
-            pkg_project_gazebo, 'models', 'md25_driver', 'kitt_md25_template')))
+            pkg_project_gazebo, 'models', 'md25_driver', 'kitt_nav_md25_template')))
 
         # Render the templates and write the output files
-        for template_name, output_name in [('kitt_md25_template.sdf.jinja', f'{model_name_str}.sdf'),
+        for template_name, output_name in [('kitt_nav_md25_template.sdf.jinja', f'{model_name_str}.sdf'),
                                         ('model.config.jinja', 'model.config')]:
             template = env.get_template(template_name)
             output = template.render(model_name=model_name_str)
@@ -36,6 +36,7 @@ def generate_model_files(context: LaunchContext, model_name: str):
     else:
         print(f"Model files for {model_name_str} already exist, skipping generation")
     return
+
 
 def generate_launch_description():
     # Configure ROS nodes for launch
@@ -48,7 +49,7 @@ def generate_launch_description():
     # kitt name argument
     kitt_name = DeclareLaunchArgument(
         'kitt_name',
-        default_value='kitt_md25_01',
+        default_value='kitt_nav_md25_01',
         description='Name of the KITT model in Gazebo'
     )
     kitt_name_arg = LaunchConfiguration('kitt_name')
@@ -56,14 +57,13 @@ def generate_launch_description():
     # Labeled model creator 
     create_files = OpaqueFunction(function=generate_model_files, args=[kitt_name_arg])
 
-
     # Bridge ROS topics and Gazebo messages for establishing communication
     bridge = Node(
         package='ros_gz_bridge',
         executable='parameter_bridge',
-        name='kitt_md25_bridge',
+        name='kitt_nav_md25_bridge',
         parameters=[
-            {'config_file': os.path.join(pkg_project_bringup, 'config', 'kitt_md25_bridge.yaml')},
+            {'config_file': os.path.join(pkg_project_bringup, 'config', 'kitt_nav_md25_bridge.yaml')},
             {'expand_gz_topic_names': True}
         ],
         namespace=['/model/', kitt_name_arg],
@@ -83,9 +83,24 @@ def generate_launch_description():
         output='screen'
     )
 
+    # Transformation between the car and the lidar
+    static_transform_publisher_node = Node(
+        package='tf2_ros',
+        executable='static_transform_publisher',
+        name='lidar_transform_broadcaster',
+        namespace=['/model/', kitt_name_arg],
+        arguments=['0.1075', '-0.03295', '0.145',
+                   '0', '0', '0', '1',
+                   PathJoinSubstitution([kitt_name_arg, 'car_body']),
+                   PathJoinSubstitution([kitt_name_arg, 'nav_module', 'rplidar_a2m8'])],
+        output='screen',
+    )
+
+
     return LaunchDescription([
         create_files,
         kitt_name,
         bridge,
-        spawn_entity
+        spawn_entity,
+        static_transform_publisher_node
     ])
