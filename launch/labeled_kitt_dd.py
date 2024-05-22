@@ -70,15 +70,40 @@ def generate_launch_description():
         output='screen'
     )
 
+    initial_x = DeclareLaunchArgument(
+        'initial_x',
+        default_value='3',
+        description='X model-spawn coordinate in Gazebo'
+    )
+    initial_y = DeclareLaunchArgument(
+        'initial_y',
+        default_value='-3',
+        description='Y model-spawn coordinate in Gazebo'
+    )
+    initial_z = DeclareLaunchArgument(
+        'initial_z',
+        default_value='0.01',
+        description='Z model-spawn coordinate in Gazebo'
+    )
+    initial_Y = DeclareLaunchArgument(
+        'initial_Y',
+        default_value='3.1416',
+        description='Yaw model-spawn angle in Gazebo'
+    )
+    initial_x_arg = LaunchConfiguration('initial_x')
+    initial_y_arg = LaunchConfiguration('initial_y')
+    initial_z_arg = LaunchConfiguration('initial_z')
+    initial_Y_arg = LaunchConfiguration('initial_Y')
+
     # Spawn the car model in the Gazebo world
     spawn_entity = Node(
         package='ros_gz_sim',
         executable='create',
         namespace= kitt_name_arg,
-        arguments=['-x', '3',
-                   '-y', '-3',
-                   '-z', '0.1',
-                   '-Y', '3.1416',
+        arguments=['-x', initial_x_arg,
+                   '-y', initial_y_arg,
+                   '-z', initial_z_arg,
+                   '-Y', initial_Y_arg,
                    '-file', PathJoinSubstitution([pkg_project_gazebo, 'models', 'diff_drive', kitt_name_arg])],
         output='screen'
     )
@@ -87,5 +112,9 @@ def generate_launch_description():
         create_files,
         kitt_name,
         bridge,
-        spawn_entity
+        spawn_entity,
+        initial_x,
+        initial_y,
+        initial_z,
+        initial_Y
     ])

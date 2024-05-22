@@ -24,12 +24,12 @@ def generate_launch_description():
     config_gui_path = os.path.join(pkg_project_bringup, 'config', 'gazebo_gui.config')
     kitt_dd_launch_path = os.path.join(pkg_project_bringup, 'launch', 'labeled_kitt_dd.py')
 
-    kitt_name = DeclareLaunchArgument(
-        'kitt_name',
-        default_value='kitt_dd_01',
-        description='Name of the KITT model in Gazebo'
-    )
-    kitt_name_arg = LaunchConfiguration('kitt_name')
+    # kitt_name = DeclareLaunchArgument(
+    #     'kitt_name',
+    #     default_value='kitt_dd_01',
+    #     description='Name of the KITT model in Gazebo'
+    # )
+    # kitt_name_arg = LaunchConfiguration('kitt_name')
 
     control_laboratory = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
@@ -39,13 +39,28 @@ def generate_launch_description():
 
 
     # Bridge ROS topics and Gazebo messages for establishing communication
-    kitt_dd_robot = IncludeLaunchDescription(
+    kitt_dd_robot_1 = IncludeLaunchDescription(
         PythonLaunchDescriptionSource([kitt_dd_launch_path]),
-        launch_arguments={'kitt_name': kitt_name_arg}.items(),
+        launch_arguments={'kitt_name': 'kitt_dd_01',
+                          'initial_x': '3',
+                          'initial_y': '-4',
+                          'initial_z': '0.01',
+                          'initial_Y': '0'}.items(),
+    )
+
+    # Bridge ROS topics and Gazebo messages for establishing communication
+    kitt_dd_robot_2 = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource([kitt_dd_launch_path]),
+        launch_arguments={'kitt_name': 'kitt_dd_02',
+                          'initial_x': '3',
+                          'initial_y': '-3',
+                          'initial_z': '0.01',
+                          'initial_Y': '3.1416'}.items(),
     )
 
     return LaunchDescription([
-        kitt_name,
+        # kitt_name,
         control_laboratory,
-        kitt_dd_robot
+        kitt_dd_robot_1,
+        kitt_dd_robot_2
     ])

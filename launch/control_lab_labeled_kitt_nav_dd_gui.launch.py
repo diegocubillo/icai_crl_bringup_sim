@@ -41,7 +41,11 @@ def generate_launch_description():
     # Bridge ROS topics and Gazebo messages for establishing communication
     kitt_dd_robot = IncludeLaunchDescription(
         PythonLaunchDescriptionSource([kitt_dd_launch_path]),
-        launch_arguments={'kitt_name': kitt_name_arg}.items(),
+        launch_arguments={'kitt_name': kitt_name_arg,
+                          'initial_x': '3',
+                          'initial_y': '-3',
+                          'initial_z': '0.01',
+                          'initial_Y': '3.1416'}.items(),
     )
 
     return LaunchDescription([
