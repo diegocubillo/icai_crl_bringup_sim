@@ -33,7 +33,7 @@ def generate_launch_description():
         package='ros_gz_bridge',
         executable='parameter_bridge',
         parameters=[
-            {'config_file': os.path.join(pkg_project_bringup, 'config', 'kitt_bridge.yaml')},
+            {'config_file': os.path.join(pkg_project_bringup, 'config', 'kitt_dd_bridge.yaml')},
             {'expand_gz_topic_names': True}
         ],
         namespace=['/model/kitt'],

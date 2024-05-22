@@ -55,8 +55,7 @@ def generate_launch_description():
     rqt_image_view = Node(
         package='rqt_image_view',
         executable='rqt_image_view',
-        arguments=['fpv_camera'],
-        namespace=['/model/kitt'],
+        arguments=['/model/kitt/fpv_camera'],
         output='screen'
     )
 

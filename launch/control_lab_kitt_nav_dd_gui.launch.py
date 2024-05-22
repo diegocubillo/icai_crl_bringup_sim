@@ -43,7 +43,8 @@ def generate_launch_description():
     spawn_entity = Node(
         package='ros_gz_sim',
         executable='create',
-        arguments=['-x', '3',
+        arguments=['-name', 'kitt',
+                   '-x', '3',
                    '-y', '-3',
                    '-z', '0.1',
                    '-Y', '3.1416',
