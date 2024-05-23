@@ -1,0 +1,20 @@
+- world_name: "control_laboratory"
+---
+- robot_name: "kitt_dd_01"
+  driver_name: "diff_drive"
+  initial_x: 3.0
+  initial_y: -2.0
+  initial_z: 0.01
+  initial_yaw: 0.0
+- robot_name: "kitt_dd_02"
+  driver_name: "diff_drive"
+  initial_x: 3.0
+  initial_y: -3.0
+  initial_z: 0.01
+  initial_yaw: 0.0
+- robot_name: "kitt_dd_03"
+  driver_name: "diff_drive"
+  initial_x: 3.0
+  initial_y: -4.0
+  initial_z: 0.01
+  initial_yaw: 0.0
