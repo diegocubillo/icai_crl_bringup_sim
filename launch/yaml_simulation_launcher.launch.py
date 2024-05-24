@@ -50,7 +50,7 @@ def load_yaml_file():
 
 
 
-def generate_model_and_launcher(robot_model, driver, nav_stack, x, y, z, Y, index):
+def generate_model_and_launcher(robot_model, driver, nav_stack, x, y, z, Y, index, ld):
     # Setup project paths
     pkg_project_bringup = get_package_share_directory("icai_crl_bringup")
     pkg_project_gazebo = get_package_share_directory('icai_crl_gazebo')
@@ -107,6 +107,7 @@ def generate_model_and_launcher(robot_model, driver, nav_stack, x, y, z, Y, inde
         namespace=['/model/', model_id],
         output='screen'
     )
+    ld.add_action(bridge)
 
     robot = Node(
         package='ros_gz_sim',
@@ -119,7 +120,20 @@ def generate_model_and_launcher(robot_model, driver, nav_stack, x, y, z, Y, inde
                    '-file', os.path.join(pkg_project_gazebo, 'models', driver, model_id)],
         output='screen'
     )
-    return bridge, robot
+    ld.add_action(robot)
+
+    # check if the robot has a navigation stack and is of type kitt
+    if (nav_stack) and (robot_model == 'kitt'):
+        static_transform_publisher_node = Node(
+            package='tf2_ros',
+            executable='static_transform_publisher',
+            name='lidar_transform_broadcaster',
+            namespace= model_id,
+            arguments=['0.1075', '-0.03295', '0.145', '0', '0', '0', '1', f'{model_id}/car_body', f'{model_id}/nav_module/rplidar_a2m8'],
+            output='screen',
+        )
+        ld.add_action(static_transform_publisher_node)
+    return
 
 
 
@@ -153,10 +167,8 @@ def generate_launch_description():
     # Generate a launch description for each robot
     i = 1
     for robot in robots:
-        bridge, robot = generate_model_and_launcher(*robot, i)
+        generate_model_and_launcher(*robot, i, ld)
         i += 1
-        ld.add_action(bridge)
-        ld.add_action(robot)
     i = 1
     for item in items:
         item_name = item[0]
