@@ -36,6 +36,7 @@ def generate_launch_description():
     joy = Node(
         package='joy',
         executable='joy_node',
+        namespace=['/model/kitt'],
         output='screen'
     )
 
@@ -44,7 +45,7 @@ def generate_launch_description():
         package='teleop_twist_joy',
         executable='teleop_node',
         parameters=[os.path.join(pkg_project_bringup, 'config', 'FlySky_FS-i6S.config.yaml')],
-        remappings=[('/cmd_vel', '/kitt/cmd_vel')],
+        namespace=['/model/kitt'],
         output='screen'
     )
 

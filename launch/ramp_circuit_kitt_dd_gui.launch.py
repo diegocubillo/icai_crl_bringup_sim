@@ -32,9 +32,11 @@ def generate_launch_description():
     bridge = Node(
         package='ros_gz_bridge',
         executable='parameter_bridge',
-        parameters=[{
-            'config_file': os.path.join(pkg_project_bringup, 'config', 'kitt_bridge.yaml'),
-        }],
+        parameters=[
+            {'config_file': os.path.join(pkg_project_bringup, 'config', 'kitt_dd_bridge.yaml')},
+            {'expand_gz_topic_names': True}
+        ],
+        namespace=['/model/kitt'],
         output='screen'
     )
 
@@ -54,8 +56,7 @@ def generate_launch_description():
     spawn_entity = Node(
         package='ros_gz_sim',
         executable='create',
-        arguments=['-name', 'kitt_dd',
-                   '-x', '0.5',
+        arguments=['-x', '0.5',
                    '-y', '-0.65',
                    '-z', '0.84',
                    '-file', os.path.join(pkg_project_gazebo, 'models', 'diff_drive', 'kitt_dd')],

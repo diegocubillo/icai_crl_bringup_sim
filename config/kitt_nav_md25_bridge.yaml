@@ -54,3 +54,8 @@
   ros_type_name: "std_msgs/msg/Int32"
   gz_type_name: "gz.msgs.Int32"
   direction: GZ_TO_ROS
+- ros_topic_name: "rplidar_a2m8/scan"
+  gz_topic_name: "rplidar_a2m8/scan"
+  ros_type_name: "sensor_msgs/msg/LaserScan"
+  gz_type_name: "gz.msgs.LaserScan"
+  direction: GZ_TO_ROS
