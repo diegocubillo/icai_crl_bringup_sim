@@ -13,7 +13,7 @@ from launch_ros.actions import Node
 
 import yaml
 
-N = 1
+N = 2
 
 
 def load_yaml_file():
