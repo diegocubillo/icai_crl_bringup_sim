@@ -1,4 +1,4 @@
-# icai_crl_bringup
+# icai_crl_bringup_sim
 
 Launch and configuration files for robot simulation of ICAI's Control and Robotics Laboratory.
 
