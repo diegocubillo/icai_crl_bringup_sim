@@ -30,22 +30,23 @@ def load_yaml_file():
     world_name = loaded_data[0][0].get('world_name')
     print(f"World name: {world_name}")
 
-    # # Count the number of robots
-    # num_robots = len(loaded_data[1])
-    # print(f"Number of robots: {num_robots}")
-
     # Create a list of robot launch descriptions
     robots = []
-    for robot in loaded_data[1]:
-        robots.append((robot.get('robot_name'), robot.get('driver_name'), robot.get('navigation_stack'), robot.get('initial_x'), robot.get('initial_y'), robot.get('initial_z'), robot.get('initial_yaw')))
-        print(f"Robot: {robot.get('robot_name')}, driver: {robot.get('driver_name')}, navigation stack: {robot.get('navigation_stack')}, x: {robot.get('initial_x')}, y: {robot.get('initial_y')}, z: {robot.get('initial_z')}, Y: {robot.get('initial_yaw')}")
-    
+
     # Create a list of items
     items = []
-    for item in loaded_data[2]:
-        items.append((item.get('item_name'), item.get('initial_x'), item.get('initial_y'), item.get('initial_z'), item.get('initial_yaw')))
-        print(f"Item: {item.get('item_name')}, x: {item.get('initial_x')}, y: {item.get('initial_y')}, z: {item.get('initial_z')}, Y: {item.get('initial_yaw')}")
-    
+
+    for element in loaded_data[0]:
+        # Fill the robots list
+        if "robot_name" in element:
+            robots.append((element.get('robot_name'), element.get('driver_name'), element.get('navigation_stack'), element.get('initial_x'), element.get('initial_y'), element.get('initial_z'), element.get('initial_yaw')))
+            print(f"Robot: {element.get('robot_name')}, driver: {element.get('driver_name')}, navigation stack: {element.get('navigation_stack')}, x: {element.get('initial_x')}, y: {element.get('initial_y')}, z: {element.get('initial_z')}, Y: {element.get('initial_yaw')}")
+        # Fill the items list
+        elif "item_name" in element:
+            items.append((element.get('item_name'), element.get('initial_x'), element.get('initial_y'), element.get('initial_z'), element.get('initial_yaw')))
+            print(f"Item: {element.get('item_name')}, x: {element.get('initial_x')}, y: {element.get('initial_y')}, z: {element.get('initial_z')}, Y: {element.get('initial_yaw')}")
+
+
     return world_name, robots, items
 
 
