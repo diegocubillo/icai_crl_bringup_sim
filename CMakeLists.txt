@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.5)
 
-project(icai_crl_bringup)
+project(icai_crl_bringup_sim)
 
 find_package(ament_cmake REQUIRED)
 find_package(icai_crl_description REQUIRED)

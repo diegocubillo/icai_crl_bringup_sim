@@ -18,10 +18,10 @@ N = 1
 
 def load_yaml_file():
     # Setup project paths
-    pkg_project_bringup = get_package_share_directory("icai_crl_bringup")
+    pkg_project_bringup_sim = get_package_share_directory("icai_crl_bringup_sim")
     # Load the YAML file
     formatted_N = f"{N:03}"
-    with open(os.path.join(pkg_project_bringup, "config", f"launch_{formatted_N}.yaml"), "r") as file:
+    with open(os.path.join(pkg_project_bringup_sim, "config", f"launch_{formatted_N}.yaml"), "r") as file:
         data = yaml.safe_load_all(file)
         loaded_data = list(data)
     print(f"Loading data from file launch_{formatted_N}.yaml")
@@ -53,7 +53,7 @@ def load_yaml_file():
 
 def generate_model_and_launcher(robot_model, driver, nav_stack, x, y, z, Y, index, ld):
     # Setup project paths
-    pkg_project_bringup = get_package_share_directory("icai_crl_bringup")
+    pkg_project_bringup_sim = get_package_share_directory("icai_crl_bringup_sim")
     pkg_project_gazebo = get_package_share_directory('icai_crl_gazebo')
 
 
@@ -102,7 +102,7 @@ def generate_model_and_launcher(robot_model, driver, nav_stack, x, y, z, Y, inde
         executable='parameter_bridge',
         name='bridge',
         parameters=[
-            {'config_file': os.path.join(pkg_project_bringup, 'config', f'{model_name}_bridge.yaml')},
+            {'config_file': os.path.join(pkg_project_bringup_sim, 'config', f'{model_name}_bridge.yaml')},
             {'expand_gz_topic_names': True}
         ],
         namespace=['/model/', model_id],
@@ -142,7 +142,7 @@ def generate_launch_description():
     # Configure ROS nodes for launch
 
     # Setup project paths
-    pkg_project_bringup = get_package_share_directory("icai_crl_bringup")
+    pkg_project_bringup_sim = get_package_share_directory("icai_crl_bringup_sim")
     pkg_project_gazebo = get_package_share_directory("icai_crl_gazebo")
     pkg_project_description = get_package_share_directory('icai_crl_description')
     pkg_ros_gz_sim = get_package_share_directory("ros_gz_sim")
@@ -150,7 +150,7 @@ def generate_launch_description():
     # Setup to launch the simulator and Gazebo world
     world_name, robots, items = load_yaml_file()
     world_sdf_path = os.path.join(pkg_project_gazebo, "worlds", f"{world_name}.sdf")
-    config_gui_path = os.path.join(pkg_project_bringup, "config", "gazebo_gui.config")
+    config_gui_path = os.path.join(pkg_project_bringup_sim, "config", "gazebo_gui.config")
     
     ld = LaunchDescription()
 

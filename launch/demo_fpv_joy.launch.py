@@ -14,13 +14,13 @@ def generate_launch_description():
     # Configure ROS nodes for launch
 
     # Setup project paths
-    pkg_project_bringup = get_package_share_directory('icai_crl_bringup')
+    pkg_project_bringup_sim = get_package_share_directory('icai_crl_bringup_sim')
     pkg_project_gazebo = get_package_share_directory('icai_crl_gazebo')
     pkg_ros_gz_sim = get_package_share_directory('ros_gz_sim')
 
     # Setup to launch the simulator and Gazebo world
     world_sdf_path = os.path.join(pkg_project_gazebo, 'worlds', 'control_laboratory.sdf')
-    config_gui_path = os.path.join(pkg_project_bringup, 'config', 'gazebo_gui.config')
+    config_gui_path = os.path.join(pkg_project_bringup_sim, 'config', 'gazebo_gui.config')
     gz_sim = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(pkg_ros_gz_sim, 'launch', 'gz_sim.launch.py')),
@@ -32,7 +32,7 @@ def generate_launch_description():
         package='ros_gz_bridge',
         executable='parameter_bridge',
         parameters=[
-            {'config_file': os.path.join(pkg_project_bringup, 'config', 'kitt_fpv_dd_bridge.yaml')},
+            {'config_file': os.path.join(pkg_project_bringup_sim, 'config', 'kitt_fpv_dd_bridge.yaml')},
             {'expand_gz_topic_names': True}
         ],
         namespace=['/model/kitt'],
@@ -71,7 +71,7 @@ def generate_launch_description():
     teleop = Node(
         package='teleop_twist_joy',
         executable='teleop_node',
-        parameters=[os.path.join(pkg_project_bringup, 'config', 'FlySky_FS-i6S.config.yaml')],
+        parameters=[os.path.join(pkg_project_bringup_sim, 'config', 'FlySky_FS-i6S.config.yaml')],
         namespace=['/model/kitt'],
         output='screen'
     )

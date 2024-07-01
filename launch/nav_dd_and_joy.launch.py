@@ -23,12 +23,12 @@ def generate_launch_description():
     # Configure ROS nodes for launch
 
     # Setup project paths
-    pkg_project_bringup = get_package_share_directory('icai_crl_bringup')
+    pkg_project_bringup_sim = get_package_share_directory('icai_crl_bringup_sim')
 
     # Setup to launch the simulator and Gazebo world, and ros_gz_bridge
     gazebo_world_launch = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-                pkg_project_bringup + '/launch/control_lab_kitt_nav_dd_gui.launch.py')
+                pkg_project_bringup_sim + '/launch/control_lab_kitt_nav_dd_gui.launch.py')
     )
 
 
@@ -44,7 +44,7 @@ def generate_launch_description():
     teleop = Node(
         package='teleop_twist_joy',
         executable='teleop_node',
-        parameters=[os.path.join(pkg_project_bringup, 'config', 'FlySky_FS-i6S.config.yaml')],
+        parameters=[os.path.join(pkg_project_bringup_sim, 'config', 'FlySky_FS-i6S.config.yaml')],
         namespace=['/model/kitt'],
         output='screen'
     )
