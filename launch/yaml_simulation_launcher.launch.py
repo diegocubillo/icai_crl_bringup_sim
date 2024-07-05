@@ -124,18 +124,6 @@ def generate_model_and_launcher(robot_model, driver, nav_stack, x, y, z, Y, inde
         output='screen'
     )
     ld.add_action(robot)
-
-    # # check if the robot has a navigation stack and is of type kitt
-    # if (nav_stack) and (robot_model == 'kitt'):
-    #     static_transform_publisher_node = Node(
-    #         package='tf2_ros',
-    #         executable='static_transform_publisher',
-    #         name='lidar_transform_broadcaster',
-    #         namespace= model_id,
-    #         arguments=['0.1075', '-0.03295', '0.145', '0', '0', '0', '1', f'{model_id}/car_body', f'{model_id}/nav_module/rplidar_a2m8'],
-    #         output='screen',
-    #     )
-    #     ld.add_action(static_transform_publisher_node)
     return
 
 
@@ -200,24 +188,7 @@ def generate_launch_description():
         )
         i += 1
         ld.add_action(node)
-
-    odom_transformation = Node(
-        package='tf2_ros',
-        executable='static_transform_publisher',
-        name='odom_transform_broadcaster',
-        namespace='model/kitt_nav_md25_01',
-        arguments=['--x', '3',
-                   '--y', '-3',
-                   '--z', '0',
-                   '--qx', '0',
-                   '--qy', '0',
-                   '--qz', '0',
-                   '--qw', '1',
-                   '--frame-id', 'control_laboratory',
-                   '--child-frame-id', 'kitt_nav_md25_01/odom'],
-        output='screen'
-    )
-    ld.add_action(odom_transformation)
+        
 
     # Return the launch description
     return ld
