@@ -7,13 +7,15 @@ from jinja2 import Environment, FileSystemLoader
 from launch import LaunchDescription
 from launch.actions import (
     IncludeLaunchDescription,
+    DeclareLaunchArgument
 )
+from launch.substitutions import LaunchConfiguration
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch_ros.actions import Node
 
 import yaml
 
-N = 1
+N = 3
 
 
 def load_yaml_file():
@@ -51,7 +53,7 @@ def load_yaml_file():
 
 
 
-def generate_model_and_launcher(robot_model, driver, nav_stack, x, y, z, Y, index, ld):
+def generate_model_and_launcher(robot_model, driver, nav_stack, x, y, z, Y, index, ld, use_sim_time):
     # Setup project paths
     pkg_project_bringup_sim = get_package_share_directory("icai_crl_bringup_sim")
     pkg_project_gazebo = get_package_share_directory('icai_crl_gazebo')
@@ -103,7 +105,8 @@ def generate_model_and_launcher(robot_model, driver, nav_stack, x, y, z, Y, inde
         name='bridge',
         parameters=[
             {'config_file': os.path.join(pkg_project_bringup_sim, 'config', f'{model_name}_bridge.yaml')},
-            {'expand_gz_topic_names': True}
+            {'expand_gz_topic_names': True},
+            {'use_sim_time': use_sim_time}
         ],
         namespace=['/model/', model_id],
         output='screen'
@@ -122,18 +125,6 @@ def generate_model_and_launcher(robot_model, driver, nav_stack, x, y, z, Y, inde
         output='screen'
     )
     ld.add_action(robot)
-
-    # check if the robot has a navigation stack and is of type kitt
-    if (nav_stack) and (robot_model == 'kitt'):
-        static_transform_publisher_node = Node(
-            package='tf2_ros',
-            executable='static_transform_publisher',
-            name='lidar_transform_broadcaster',
-            namespace= model_id,
-            arguments=['0.1075', '-0.03295', '0.145', '0', '0', '0', '1', f'{model_id}/car_body', f'{model_id}/nav_module/rplidar_a2m8'],
-            output='screen',
-        )
-        ld.add_action(static_transform_publisher_node)
     return
 
 
@@ -154,13 +145,23 @@ def generate_launch_description():
     
     ld = LaunchDescription()
 
+
+    use_sim_time = LaunchConfiguration('use_sim_time', default='True')
+
+    use_sim_time_arg = DeclareLaunchArgument(
+        'use_sim_time',
+        default_value=use_sim_time,
+        description='Use simulation (Gazebo) clock if true'
+    )
+    ld.add_action(use_sim_time_arg)
+
     # Launch the simulator and Gazebo world
     control_laboratory = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(pkg_ros_gz_sim, "launch", "gz_sim.launch.py")
         ),
         launch_arguments={
-            "gz_args": world_sdf_path + " -v --gui-config " + config_gui_path
+            "gz_args": world_sdf_path + " -r -s" #" -r -v --gui-config " + config_gui_path
         }.items(),
     )
     ld.add_action(control_laboratory)
@@ -168,26 +169,27 @@ def generate_launch_description():
     # Generate a launch description for each robot
     i = 1
     for robot in robots:
-        generate_model_and_launcher(*robot, i, ld)
+        generate_model_and_launcher(*robot, i, ld, use_sim_time)
         i += 1
     i = 1
     for item in items:
         item_name = item[0]
         item_id = f'{item_name}_{i}'
         node = Node(
-        package='ros_gz_sim',
-        executable='create',
-        namespace= item_id,
-        arguments=['-name', item_id,
-                   '-x', str(item[1]),
-                   '-y', str(item[2]),
-                   '-z', str(item[3]),
-                   '-Y', str(item[4]),
-                   '-file', os.path.join(pkg_project_description, 'models', 'environments', item_name)],
-        output='screen'
-    )
+            package='ros_gz_sim',
+            executable='create',
+            namespace= item_id,
+            arguments=['-name', item_id,
+                    '-x', str(item[1]),
+                    '-y', str(item[2]),
+                    '-z', str(item[3]),
+                    '-Y', str(item[4]),
+                    '-file', os.path.join(pkg_project_description, 'models', 'environments', item_name)],
+            output='screen'
+        )
         i += 1
         ld.add_action(node)
+        
 
     # Return the launch description
     return ld

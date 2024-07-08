@@ -1,0 +1,15 @@
+- world_name: "control_laboratory"
+---
+- robot_name: "kitt"
+  driver_name: "md25_driver"
+  navigation_stack: true
+  initial_x: 3.0
+  initial_y: -3.0
+  initial_z: 0.01
+  initial_yaw: 0.0
+---
+- item_name: "ramp_circuit"
+  initial_x: 0.55
+  initial_y: -5.3
+  initial_z: 0.01
+  initial_yaw: 1.5708
