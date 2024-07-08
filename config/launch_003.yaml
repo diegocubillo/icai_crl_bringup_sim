@@ -1,5 +1,4 @@
 - world_name: "control_laboratory_lite"
----
 - robot_name: "kitt"
   driver_name: "diff_drive"
   navigation_stack: true
@@ -14,7 +13,6 @@
   initial_y: -4.0
   initial_z: 0.0
   initial_yaw: 0.0
----
 - item_name: "ramp_circuit"
   initial_x: 0.55
   initial_y: -5.3
