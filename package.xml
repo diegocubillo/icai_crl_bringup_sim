@@ -9,6 +9,8 @@
   <author>Diego Cubillo</author>
 
   <depend>ros_gz</depend>
+  <depend>ros_gz_sim</depend>
+  <depend>ros_gz_bridge</depend>
   <depend>joy</depend>
   <depend>teleop_twist_joy</depend>
   <depend>rqt_image_view</depend>
@@ -19,6 +21,8 @@
 
   <depend>icai_crl_description</depend>
   <depend>icai_crl_gazebo</depend>
+  <depend>hardware_bridge</depend>
+  <depend>rqt_kitt_hmi</depend>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 

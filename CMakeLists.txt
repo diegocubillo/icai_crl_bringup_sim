@@ -5,6 +5,8 @@ project(icai_crl_bringup_sim)
 find_package(ament_cmake REQUIRED)
 find_package(icai_crl_description REQUIRED)
 find_package(icai_crl_gazebo REQUIRED)
+find_package(ros_gz_sim REQUIRED)
+find_package(hardware_bridge REQUIRED)
 
 # Install project launch files
 install(
