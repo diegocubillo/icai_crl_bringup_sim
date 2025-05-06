@@ -18,6 +18,7 @@ def generate_launch_description():
     pkg_project_gazebo = get_package_share_directory('icai_crl_gazebo')
     pkg_project_description = get_package_share_directory('icai_crl_description')
     pkg_ros_gz_sim = get_package_share_directory('ros_gz_sim')
+    pkg_hardware_bridge = get_package_share_directory('hardware_bridge')
 
     # Setup to launch the simulator and Gazebo world
     world_sdf_path = os.path.join(pkg_project_gazebo, 'worlds', 'empty_world.sdf')
@@ -46,8 +47,10 @@ def generate_launch_description():
         package='ros_gz_sim',
         executable='create',
         arguments=['-name', 'ramp_circuit',
-                   '-x', '0',
-                   '-y', '0',
+                   '-x', '3.1',
+                   '-y', '-0.48',
+                   '-z', '0',
+                   '-Y', '1.46',
                    '-file', os.path.join(pkg_project_description, 'models', 'environments', 'ramp_circuit')],
         output='screen'
     )
@@ -56,10 +59,24 @@ def generate_launch_description():
     spawn_entity = Node(
         package='ros_gz_sim',
         executable='create',
-        arguments=['-x', '0.5',
-                   '-y', '-0.65',
+        arguments=['-x', '0.1',
+                   '-y', '-0.2',
                    '-z', '0.84',
                    '-file', os.path.join(pkg_project_gazebo, 'models', 'md25_driver', 'kitt_md25')],
+        output='screen'
+    )
+
+    # Launch the hardware bridge to communicate with the Raspberry Pi
+    hardware_bridge = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(pkg_hardware_bridge, 'launch', 'hardware_bridge.launch.py')),
+        launch_arguments={'ip_address': '192.168.2.123','send_period_ms': '5','namespace': '/model/kitt'}.items(),
+    )
+
+    virtual_buttons = Node(
+        package='rqt_kitt_hmi',
+        executable='rqt_kitt_hmi',
+        namespace=['/model/kitt'],
         output='screen'
     )
 
@@ -67,5 +84,7 @@ def generate_launch_description():
         gz_sim,
         bridge,
         spawn_circuit,
-        spawn_entity
+        spawn_entity,
+        hardware_bridge,
+        virtual_buttons
     ])
