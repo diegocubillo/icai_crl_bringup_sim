@@ -46,10 +46,10 @@ def generate_launch_description():
     kitt_md25_robot = Node(
         package='ros_gz_sim',
         executable='create',
-        arguments=['-x', '3',
-                   '-y', '-3',
-                   '-z', '0.1',
-                   '-Y', '3.1416',
+        arguments=['-x', '0.5',
+                   '-y', '-5.4',
+                   '-z', '0.01',
+                   '-Y', '0.1',
                    '-file', os.path.join(pkg_project_gazebo, 'models', 'md25_driver', 'kitt_md25')],
         output='screen'
     )
