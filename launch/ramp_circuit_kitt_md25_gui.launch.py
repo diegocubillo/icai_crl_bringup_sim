@@ -47,10 +47,9 @@ def generate_launch_description():
         package='ros_gz_sim',
         executable='create',
         arguments=['-name', 'ramp_circuit',
-                   '-x', '3.1',
-                   '-y', '-0.48',
+                   '-x', '0',
+                   '-y', '0',
                    '-z', '0',
-                   '-Y', '1.46',
                    '-file', os.path.join(pkg_project_description, 'models', 'environments', 'ramp_circuit')],
         output='screen'
     )
@@ -59,8 +58,8 @@ def generate_launch_description():
     spawn_entity = Node(
         package='ros_gz_sim',
         executable='create',
-        arguments=['-x', '0.1',
-                   '-y', '-0.2',
+        arguments=['-x', '0.5',
+                   '-y', '-0.18',
                    '-z', '0.84',
                    '-file', os.path.join(pkg_project_gazebo, 'models', 'md25_driver', 'kitt_md25')],
         output='screen'

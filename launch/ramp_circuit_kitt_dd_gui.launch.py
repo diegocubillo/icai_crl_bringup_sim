@@ -57,7 +57,7 @@ def generate_launch_description():
         package='ros_gz_sim',
         executable='create',
         arguments=['-x', '0.5',
-                   '-y', '-0.65',
+                   '-y', '-0.18',
                    '-z', '0.84',
                    '-file', os.path.join(pkg_project_gazebo, 'models', 'diff_drive', 'kitt_dd')],
         output='screen'
