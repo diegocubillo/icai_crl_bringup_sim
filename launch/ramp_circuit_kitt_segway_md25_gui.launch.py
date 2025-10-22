@@ -58,9 +58,23 @@ def generate_launch_description():
         package='ros_gz_sim',
         executable='create',
         arguments=['-x', '0.5',
-                   '-y', '-0.65',
+                   '-y', '-0.18',
                    '-z', '0.84',
-                   '-file', os.path.join(pkg_project_gazebo, 'models', 'md25_driver', 'kitt_md25')],
+                   '-P', '-0.01',
+                   '-Y', '0.1',
+                   '-file', os.path.join(pkg_project_gazebo, 'models', 'md25_driver', 'kitt_segway_md25')],
+        output='screen'
+    )
+
+    # Spawn the support wall for segway startup
+    support_wall = Node(
+        package='ros_gz_sim',
+        executable='create',
+        arguments=['-x', '0.415',
+                   '-y', '-0.18',
+                   '-z', '0.84',
+                   '-Y', '0.1',
+                   '-file', os.path.join(pkg_project_description, 'models', 'environments', 'support_wall')],
         output='screen'
     )
 
@@ -83,6 +97,7 @@ def generate_launch_description():
         bridge,
         spawn_circuit,
         spawn_entity,
+        support_wall,
         hardware_bridge,
         virtual_buttons
     ])
