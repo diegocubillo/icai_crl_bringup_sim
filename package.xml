@@ -9,20 +9,20 @@
   <author>Diego Cubillo</author>
 
   <depend>ros_gz</depend>
-  <depend>ros_gz_sim</depend>
-  <depend>ros_gz_bridge</depend>
-  <depend>joy</depend>
-  <depend>teleop_twist_joy</depend>
-  <depend>rqt_image_view</depend>
-  <depend>tf2_ros</depend>
-  <depend>slam_toolbox</depend>
-  <depend>nav2_map_server</depend>
-  <depend>nav2_lifecycle_manager</depend>
+  <exec_depend>ros_gz_sim</exec_depend>
+  <exec_depend>ros_gz_bridge</exec_depend>
+  <exec_depend>joy</exec_depend>
+  <exec_depend>teleop_twist_joy</exec_depend>
+  <exec_depend>rqt_image_view</exec_depend>
+  <exec_depend>tf2_ros</exec_depend>
+  <exec_depend>slam_toolbox</exec_depend>
+  <exec_depend>nav2_map_server</exec_depend>
+  <exec_depend>nav2_lifecycle_manager</exec_depend>
 
-  <depend>icai_crl_description</depend>
-  <depend>icai_crl_gazebo</depend>
-  <depend>hardware_bridge</depend>
-  <depend>rqt_kitt_hmi</depend>
+  <exec_depend>icai_crl_description</exec_depend>
+  <exec_depend>icai_crl_gazebo</exec_depend>
+  <exec_depend>hardware_bridge</exec_depend>
+  <exec_depend>rqt_kitt_hmi</exec_depend>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 
