@@ -155,7 +155,7 @@ def launch_setup(context, *args, **kwargs):
     actions = []
 
     # Launch the simulator and Gazebo world
-    control_laboratory = IncludeLaunchDescription(
+    simulation_world = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(pkg_ros_gz_sim, "launch", "gz_sim.launch.py")
         ),
@@ -163,7 +163,26 @@ def launch_setup(context, *args, **kwargs):
             "gz_args": world_sdf_path + " -r -s" #" -r -v --gui-config " + config_gui_path
         }.items(),
     )
-    actions.append(control_laboratory)
+    actions.append(simulation_world)
+
+    # Launch tf transformation from "map" to world_name
+    static_map_transformation = Node(
+        package='tf2_ros',
+        executable='static_transform_publisher',
+        name='map_transform_broadcaster',
+        arguments=['--x', '0',
+                   '--y', '0',
+                   '--z', '0',
+                   '--qx', '0',
+                   '--qy', '0',
+                   '--qz', '0',
+                   '--qw', '1',
+                   '--frame-id', 'map',
+                   '--child-frame-id', world_name],
+        parameters=[{'use_sim_time': use_sim_time}],
+        output='screen',
+    )
+    actions.append(static_map_transformation)
 
     # Generate a launch description for each robot
     i = 1
