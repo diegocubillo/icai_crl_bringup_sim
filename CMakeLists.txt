@@ -22,6 +22,13 @@ install(
   DESTINATION share/${PROJECT_NAME}/config
 )
 
+# Install map files
+install(
+  DIRECTORY
+    maps/
+  DESTINATION share/${PROJECT_NAME}/maps
+)
+
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
   ament_lint_auto_find_test_dependencies()
