@@ -22,11 +22,10 @@ def generate_launch_description():
 
     # Setup to launch the simulator and Gazebo world
     world_sdf_path = os.path.join(pkg_project_gazebo, 'worlds', 'empty_world.sdf')
-    config_gui_path = os.path.join(pkg_project_bringup_sim, 'config', 'gazebo_gui.config')
     gz_sim = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(pkg_ros_gz_sim, 'launch', 'gz_sim.launch.py')),
-        launch_arguments={'gz_args': world_sdf_path + ' --gui-config ' + config_gui_path}.items(),
+        launch_arguments={'gz_args': world_sdf_path + ' -r -s'}.items(),
     )
 
     # Bridge ROS topics and Gazebo messages for establishing communication
