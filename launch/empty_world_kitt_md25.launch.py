@@ -66,5 +66,5 @@ def generate_launch_description():
         bridge,
         spawn_entity,
         hardware_bridge,
-        virtual_buttons
+        # virtual_buttons
     ])
