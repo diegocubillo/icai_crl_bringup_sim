@@ -36,7 +36,7 @@ This package contains several launch files to start different simulation scenari
 
 ### Parametrizable Launcher
 
--   `yaml_simulation_launcher.launch.py`: This is the core launcher of the package. It is a versatile script that spawns a complete simulation environment—including the world, robots, and other items—from a single YAML configuration file. This allows for easy definition and modification of complex scenarios.
+-   `yaml_simulation_launcher.launch.py`: This is the core launcher of the package. It is a versatile script that spawns a complete simulation environment—including the world, robots, and other items—from a single YAML configuration file. This allows for easy definition and modification of complex scenarios. The YAML file can be selected through the ROS 2 integer launch parameter `scenario_number`.
 
 ### Pre-configured Scenarios
 
@@ -44,8 +44,10 @@ The following launch files provide ready-to-use examples for specific robot conf
 
 -   `control_lab_kitt_dd_gui.launch.py`: Launches the `kitt` robot with a `diff_drive` controller in the `control_laboratory` world.
 -   `control_lab_kitt_md25_gui.launch.py`: Launches the `kitt` robot with the custom `MD25` motor controller plugin in the `control_laboratory` world.
+-   `control_lab_kitt_segway_md25_gui.launch.py`: Launches the `kitt_segway` robot with the custom `MD25` motor controller plugin in the `control_laboratory` world.
 -   `ramp_circuit_kitt_dd_gui.launch.py`: Launches the `kitt` robot with a `diff_drive` controller in the `ramp_circuit` competition world.
 -   `ramp_circuit_kitt_md25_gui.launch.py`: Launches the `kitt` robot with the `MD25` motor controller in the `ramp_circuit` world.
+-   `ramp_circuit_kitt_segway_md25_gui.launch.py`: Launches the `kitt_segway` robot with the `MD25` motor controller in the `ramp_circuit` world.
 
 To run a launch file, source your workspace and execute the following command, replacing `<launch_file_name>` with your desired file:
 ```bash
@@ -58,7 +60,7 @@ This package includes all the necessary configuration files to define simulation
 
 ### Simulation Scenario Files
 
--   `launch_001.yaml`, `launch_002.yaml`, `launch_003.yaml`: These YAML files define complete simulation scenarios for the `yaml_simulation_launcher.launch.py`. They specify which world to load, which robots and items to spawn, and their initial positions and orientations.
+-   `launch_001.yaml`, `launch_002.yaml`, `launch_003.yaml`, `launch_004.yaml`, `launch_005.yaml`: These YAML files define complete simulation scenarios for the `yaml_simulation_launcher.launch.py`. They specify which world to load, which robots and items to spawn, and their initial positions and orientations.
 
 ### ROS <=> Gazebo Bridges
 

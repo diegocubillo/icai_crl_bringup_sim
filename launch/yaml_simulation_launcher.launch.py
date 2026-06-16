@@ -53,7 +53,7 @@ def load_yaml_file(scenario_number: int):
 
 def generate_model_and_launcher_actions(robot_model, driver, nav_stack, x, y, z, Y, index, use_sim_time):
     """
-    Genera los nodos necesarios para un robot y devuelve una lista de acciones.
+    Generates the necessary nodes for a robot and returns a list of actions.
     """
     # Setup project paths
     pkg_project_bringup_sim = get_package_share_directory("icai_crl_bringup_sim")
@@ -131,13 +131,13 @@ def generate_model_and_launcher_actions(robot_model, driver, nav_stack, x, y, z,
 
 def launch_setup(context, *args, **kwargs):
     """
-    Esta función se ejecuta en tiempo de ejecución del launch system,
-    cuando los argumentos ya están disponibles.
+    This function is executed at runtime of the launch system,
+    when the arguments are already available.
     """
-    # Obtener el valor del argumento scenario_number
+    # Get the value of the scenario_number argument
     scenario_number = int(context.launch_configurations['scenario_number'])
     
-    # Convertir use_sim_time a boolean (viene como string "True"/"False" del launch argument)
+    # Convert use_sim_time to boolean (comes as string "True"/"False" from the launch argument)
     use_sim_time_str = context.launch_configurations['use_sim_time']
     use_sim_time = use_sim_time_str.lower() in ['true', '1', 'yes']
 
@@ -147,7 +147,7 @@ def launch_setup(context, *args, **kwargs):
     pkg_project_description = get_package_share_directory('icai_crl_description')
     pkg_ros_gz_sim = get_package_share_directory("ros_gz_sim")
 
-    # Cargar el archivo YAML con el número de escenario
+    # Load the YAML file with the scenario number
     world_name, robots, items = load_yaml_file(scenario_number)
     world_sdf_path = os.path.join(pkg_project_gazebo, "worlds", f"{world_name}.sdf")
     config_gui_path = os.path.join(pkg_project_bringup_sim, "config", "gazebo_gui.config")
@@ -214,7 +214,7 @@ def launch_setup(context, *args, **kwargs):
 
 
 def generate_launch_description():
-    # Declarar argumentos de lanzamiento
+    # Declare launch arguments
     use_sim_time_arg = DeclareLaunchArgument(
         'use_sim_time',
         default_value='True',
@@ -224,10 +224,10 @@ def generate_launch_description():
     scenario_number_arg = DeclareLaunchArgument(
         'scenario_number',
         default_value='1',
-        description='Número del escenario a simular (ej: 1 para launch_001.yaml)'
+        description='Scenario number to simulate (e.g.: 1 for launch_001.yaml)'
     )
 
-    # Usar OpaqueFunction para diferir la ejecución hasta que los argumentos estén disponibles
+    # Use OpaqueFunction to defer execution until arguments are available
     return LaunchDescription([
         use_sim_time_arg,
         scenario_number_arg,
