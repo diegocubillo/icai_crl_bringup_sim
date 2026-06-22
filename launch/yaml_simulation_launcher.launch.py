@@ -96,6 +96,25 @@ def generate_model_and_launcher_actions(robot_model, driver, nav_stack, x, y, z,
     else:
         print(f"Model files for {model_id} already exist, skipping generation")
 
+    # Generate custom bridge config to avoid multiple clock publishers
+    orig_bridge_path = os.path.join(pkg_project_bringup_sim, 'config', f'{model_name}_bridge.yaml')
+    custom_bridge_path = os.path.join(model_dir, f'{model_id}_bridge_custom.yaml')
+    try:
+        with open(orig_bridge_path, 'r') as f:
+            bridge_content = yaml.safe_load(f)
+        
+        # Keep clock only for the first robot (index == 1) to avoid multiple clocks
+        if index > 1:
+            bridge_content = [item for item in bridge_content if item.get('ros_topic_name') != '/clock']
+            
+        with open(custom_bridge_path, 'w') as f:
+            yaml.dump(bridge_content, f)
+            
+        bridge_config_file = custom_bridge_path
+    except Exception as e:
+        print(f"Error customizing bridge file for {model_id}: {e}. Falling back to default.")
+        bridge_config_file = orig_bridge_path
+
     actions = []
 
     # Launch the bridge and robot
@@ -104,7 +123,7 @@ def generate_model_and_launcher_actions(robot_model, driver, nav_stack, x, y, z,
         executable='parameter_bridge',
         name='bridge',
         parameters=[
-            {'config_file': os.path.join(pkg_project_bringup_sim, 'config', f'{model_name}_bridge.yaml')},
+            {'config_file': bridge_config_file},
             {'expand_gz_topic_names': True},
             {'use_sim_time': use_sim_time}
         ],
