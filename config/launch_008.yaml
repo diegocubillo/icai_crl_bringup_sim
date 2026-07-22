@@ -1,0 +1,15 @@
+- world_name: "empty_world"
+- robot_name: "kitt"
+  driver_name: "diff_drive"
+  navigation_stack: false
+  initial_x: -1.0
+  initial_y: 0.0
+  initial_z: 0.0
+  initial_yaw: 1.5708
+- robot_name: "kitt"
+  driver_name: "diff_drive"
+  navigation_stack: false
+  initial_x: -0.5
+  initial_y: 0.0
+  initial_z: 0.0
+  initial_yaw: 1.5708
