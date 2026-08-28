@@ -16,15 +16,24 @@ from launch_ros.actions import Node
 import yaml
 
 
-def load_yaml_file(scenario_number: int):
-    # Setup project paths
-    pkg_project_bringup_sim = get_package_share_directory("icai_crl_bringup_sim")
-    # Load the YAML file
-    formatted_N = f"{scenario_number:03}"
-    with open(os.path.join(pkg_project_bringup_sim, "config", f"launch_{formatted_N}.yaml"), "r") as file:
+def load_yaml_file(scenario_number: int, scenario_file: str = ""):
+    """Scenario description, by number from config/ or from an explicit path.
+
+    The path form exists so a caller can hand over a scenario it generated
+    itself -- the measurement campaign perturbs the initial poses per seed and
+    needs to pass the result in without writing into an installed package.
+    Empty means "use the number", so every existing caller is unaffected.
+    """
+    if scenario_file:
+        path = scenario_file
+    else:
+        pkg_project_bringup_sim = get_package_share_directory("icai_crl_bringup_sim")
+        path = os.path.join(pkg_project_bringup_sim, "config",
+                            f"launch_{scenario_number:03}.yaml")
+    with open(path, "r") as file:
         data = yaml.safe_load_all(file)
         loaded_data = list(data)
-    print(f"Loading data from file launch_{formatted_N}.yaml")
+    print(f"Loading data from file {path}")
 
     # First element is the world name
     world_name = loaded_data[0][0].get('world_name')
@@ -155,6 +164,7 @@ def launch_setup(context, *args, **kwargs):
     """
     # Get the value of the scenario_number argument
     scenario_number = int(context.launch_configurations['scenario_number'])
+    scenario_file = context.launch_configurations.get('scenario_file', '')
     
     # Convert use_sim_time to boolean (comes as string "True"/"False" from the launch argument)
     use_sim_time_str = context.launch_configurations['use_sim_time']
@@ -167,7 +177,7 @@ def launch_setup(context, *args, **kwargs):
     pkg_ros_gz_sim = get_package_share_directory("ros_gz_sim")
 
     # Load the YAML file with the scenario number
-    world_name, robots, items = load_yaml_file(scenario_number)
+    world_name, robots, items = load_yaml_file(scenario_number, scenario_file)
     world_sdf_path = os.path.join(pkg_project_gazebo, "worlds", f"{world_name}.sdf")
     config_gui_path = os.path.join(pkg_project_bringup_sim, "config", "gazebo_gui.config")
 
@@ -179,7 +189,7 @@ def launch_setup(context, *args, **kwargs):
             os.path.join(pkg_ros_gz_sim, "launch", "gz_sim.launch.py")
         ),
         launch_arguments={
-            "gz_args": world_sdf_path + " -r -s" #" -r -v --gui-config " + config_gui_path
+            "gz_args": world_sdf_path + " -r -s"  # " -r -v --gui-config " + config_gui_path
         }.items(),
     )
     actions.append(simulation_world)
@@ -246,10 +256,19 @@ def generate_launch_description():
         description='Scenario number to simulate (e.g.: 1 for launch_001.yaml)'
     )
 
+    scenario_file_arg = DeclareLaunchArgument(
+        'scenario_file',
+        default_value='',
+        description='Explicit path to a scenario YAML. Overrides scenario_number '
+                    'when non-empty; used by the measurement campaign to pass a '
+                    'scenario whose initial poses it generated itself.'
+    )
+
     # Use OpaqueFunction to defer execution until arguments are available
     return LaunchDescription([
         use_sim_time_arg,
         scenario_number_arg,
+        scenario_file_arg,
         OpaqueFunction(function=launch_setup)
     ])
 
